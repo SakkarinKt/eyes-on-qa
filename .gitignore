@@ -1,0 +1,31 @@
+# secrets and local state
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite-*
+state/
+media/
+.worktrees/
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# node
+node_modules/
+target-app/dist/
+target-app/coverage/
+
+# recordings and artifacts (kept out of git; served from media/)
+*.webm
+*.mp4
+bench/results/*.png
+
+# os / editors
+.DS_Store
+.idea/
+.vscode/

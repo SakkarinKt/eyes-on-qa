@@ -1,0 +1,17 @@
+#!/bin/sh
+# Eyes-On QA governance: nothing is pushed straight to main. Humans and agents alike open a PR.
+# Installed by scripts/install-hooks.sh (git config core.hooksPath scripts/hooks).
+# The one exception is the repository's first push, with EYESONQA_ALLOW_MAIN_PUSH=1 set explicitly.
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/main|refs/heads/master)
+      if [ "${EYESONQA_ALLOW_MAIN_PUSH:-0}" = "1" ]; then
+        echo "pre-push: allowing push to $remote_ref because EYESONQA_ALLOW_MAIN_PUSH=1" >&2
+      else
+        echo "pre-push: refusing to push to $remote_ref. Push a branch and open a PR instead." >&2
+        exit 1
+      fi
+      ;;
+  esac
+done
+exit 0

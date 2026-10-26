@@ -1,0 +1,64 @@
+{
+  "goal_id": "add-task-flow",
+  "app": "target-app",
+  "title": "A user can add a task on a phone, see it saved, and mark it done",
+  "criteria": [
+    {
+      "id": "C1",
+      "description": "On a 390px-wide phone viewport the Add task button is visible and tapping it opens the new-task form",
+      "viewport": { "width": 390, "height": 844 },
+      "steps": [
+        { "action": "goto", "path": "/tasks" },
+        { "action": "wait", "ms": 400 },
+        { "action": "click", "testid": "add-task-button" },
+        { "action": "wait", "ms": 600 }
+      ],
+      "expected_visible_outcome": "A task list screen with a visible 'Add task' button; after the tap, a form titled 'New task' with a Title field and a Save button",
+      "sam_concept": "add task button",
+      "dom_assertions": [
+        { "type": "url", "contains": "/tasks/new" },
+        { "type": "visible", "testid": "new-task-form" },
+        { "type": "visible", "testid": "save-button" }
+      ]
+    },
+    {
+      "id": "C2",
+      "description": "Saving a task named 'Record the demo' returns to the list, shows a 'Task saved' toast, and lists the task",
+      "viewport": { "width": 390, "height": 844 },
+      "steps": [
+        { "action": "goto", "path": "/tasks/new" },
+        { "action": "wait", "ms": 300 },
+        { "action": "fill", "testid": "title-input", "text": "Record the demo" },
+        { "action": "select", "testid": "priority-select", "value": "high" },
+        { "action": "click", "testid": "save-button" },
+        { "action": "wait", "ms": 1200 }
+      ],
+      "expected_visible_outcome": "The task list with one row 'Record the demo' marked high priority and a dark 'Task saved' toast at the bottom of the screen",
+      "sam_concept": "task saved toast",
+      "dom_assertions": [
+        { "type": "url", "contains": "/tasks" },
+        { "type": "visible", "testid": "toast" },
+        { "type": "text", "testid": "toast", "equals": "Task saved" },
+        { "type": "count", "testid": "task-row", "count": 1 },
+        { "type": "text", "testid": "done-counter", "equals": "0 of 1 done" }
+      ]
+    },
+    {
+      "id": "C3",
+      "description": "Ticking the task's checkbox strikes the title through and the counter reads '1 of 1 done'",
+      "viewport": { "width": 390, "height": 844 },
+      "steps": [
+        { "action": "goto", "path": "/tasks" },
+        { "action": "wait", "ms": 400 },
+        { "action": "check", "testid": "task-checkbox" },
+        { "action": "wait", "ms": 800 }
+      ],
+      "expected_visible_outcome": "The row's checkbox turns green with a tick, the title 'Record the demo' is struck through and greyed, and the counter at the top reads '1 of 1 done'",
+      "sam_concept": "task checkbox",
+      "dom_assertions": [
+        { "type": "checked", "testid": "task-checkbox" },
+        { "type": "text", "testid": "done-counter", "equals": "1 of 1 done" }
+      ]
+    }
+  ]
+}
